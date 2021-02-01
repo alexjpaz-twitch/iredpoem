@@ -49,7 +49,7 @@ function App() {
   }, [ ]);
 
   if(!imageUrls) {
-    return null;
+     return <h1>plz wate lowdin</h1>;
   }
 
   return (
