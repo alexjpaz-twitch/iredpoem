@@ -10,8 +10,41 @@ const main = async () => {
   console.log(imageUrls);
 };
 
-function App() {
+function History() {
+  const images = JSON.parse(localStorage.getItem("ireedapoem.images"));
+
+  if(!images) {
+    return null;
+  }
+
+  return (
+    <div>
+      <h1>hisstori 🐍</h1>
+      {images.map((image) => (
+        <a href={image.url}>
+          <img src={image.thumbnail} />
+        </a>
+      ))}
+    </div>
+  );
+}
+
+function BigList() {
   const [imageUrls, setImageUrls] = React.useState(null);
+
+  const onClick = (item) => (e) => {
+    let images = JSON.parse(localStorage.getItem("ireedapoem.images"));
+
+    if(!images) {
+      images = [];
+    }
+
+    images.unshift(item);
+
+    localStorage.setItem("ireedapoem.images", JSON.stringify(images));
+
+    window.location.assign(item.url);
+  };
 
   React.useEffect(() => {
     async function fetchUrls() {
@@ -49,18 +82,27 @@ function App() {
   }, [ ]);
 
   if(!imageUrls) {
-     return <h1>plz wate lowdin</h1>;
+    return <h1>plz wate lowdin</h1>;
   }
 
   return (
     <div>
-      {imageUrls.map((imageUrl) => (
-        <a href={imageUrl.url}>
-          <img src={imageUrl.thumbnail} />
+      {imageUrls.map((item) => (
+        <a onClick={onClick(item)}>
+          <img src={item.thumbnail} />
         </a>
       ))}
     </div>
   );
+}
+
+function App() {
+  return(
+    <div>
+      <History />
+      <BigList />
+    </div>
+  )
 }
 
 ReactDOM.render(<App />, document.getElementById("root"));
